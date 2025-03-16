@@ -3,11 +3,11 @@ import pandas as pd
 import plotly.graph_objects as go
 from FRED_API import fetch_fred_data  
 
-# 📅 Define available years
-years = list(range(2000, 2026))
-
 # 🏁 Streamlit UI
 st.set_page_config(page_title="Economic Dashboard", layout="wide")
+
+# 📅 Define available years
+years = list(range(2000, 2026))
 
 st.title("📊 Economic Indicator Dashboard")
 st.write("Compare economic indicators over time and analyze Year-over-Year (YoY) trends.")
