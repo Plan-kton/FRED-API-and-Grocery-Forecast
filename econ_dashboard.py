@@ -51,4 +51,64 @@ st.subheader("📊 Compare Two Economic Indicators & YoY Trends")
 col1, col2 = st.columns(2)
 with col1:
     primary_variable = st.selectbox("Select Primary Indicator (Left Axis)", available_variables, index=0)
-with col2
+with col2:
+    secondary_variable = st.selectbox("Select Secondary Indicator (Right Axis)", available_variables, index=1)
+
+if primary_variable == secondary_variable:
+    st.error("⚠ Please select two different indicators for comparison.")
+    st.stop()
+
+df_yoy = df.ffill().pct_change(periods=12) * 100  # YoY percentage change
+
+# 🎨 Dual-Chart Layout
+col1, col2 = st.columns(2)
+
+# 📊 Absolute Values Chart
+with col1:
+    st.subheader("📊 Absolute Values Comparison")
+
+    fig1 = go.Figure()
+    fig1.add_trace(go.Scatter(x=df.index, y=df[primary_variable], name=primary_variable, mode="lines"))
+    fig1.add_trace(go.Scatter(x=df.index, y=df[secondary_variable], name=secondary_variable, mode="lines", yaxis="y2"))
+
+    fig1.update_layout(
+        title=f"{primary_variable} vs {secondary_variable} Over Time",
+        xaxis=dict(title="Date", type="date"),
+        yaxis=dict(title=primary_variable, side="left", showgrid=False),
+        yaxis2=dict(title=secondary_variable, side="right", overlaying="y", showgrid=False),
+        legend=dict(x=0, y=1),
+        hovermode="x unified",
+        template="plotly_white"
+    )
+
+    st.plotly_chart(fig1, use_container_width=True)
+
+# 📊 YoY % Change Chart
+with col2:
+    st.subheader("📈 Year-over-Year (YoY) Change Comparison")
+
+    fig2 = go.Figure()
+    fig2.add_trace(go.Scatter(x=df_yoy.index, y=df_yoy[primary_variable], name=f"{primary_variable} YoY % Change", mode="lines"))
+    fig2.add_trace(go.Scatter(x=df_yoy.index, y=df_yoy[secondary_variable], name=f"{secondary_variable} YoY % Change", mode="lines", yaxis="y2"))
+
+    fig2.update_layout(
+        title=f"YoY % Change: {primary_variable} vs {secondary_variable}",
+        xaxis=dict(title="Date", type="date"),
+        yaxis=dict(title=f"{primary_variable} YoY %", side="left", showgrid=False),
+        yaxis2=dict(title=f"{secondary_variable} YoY %", side="right", overlaying="y", showgrid=False),
+        legend=dict(x=0, y=1),
+        hovermode="x unified",
+        template="plotly_white"
+    )
+
+    st.plotly_chart(fig2, use_container_width=True)
+
+# 📥 Download data button
+st.download_button(
+    label="📥 Download Monthly Data as CSV",
+    data=df.to_csv(index=True),
+    file_name="economic_data_monthly.csv",
+    mime="text/csv"
+)
+
+st.write("Data source: [FRED API](https://fred.stlouisfed.org/)")
