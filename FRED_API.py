@@ -97,3 +97,9 @@ if __name__ == "__main__":
     print(df.info())  
     print("📊 First Few Rows of Data:")
     print(df.head())  
+
+    # Save the DataFrame to CSV
+    output_path = "fred_data.csv"
+    df.to_csv(output_path)
+    print(f"✅ Data saved to {output_path}")
+
