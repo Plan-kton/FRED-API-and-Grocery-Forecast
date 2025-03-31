@@ -9,6 +9,7 @@ def fetch_fred_data(start_date="2000-01-01", end_date="2025-01-01", api_key_path
     # Define economic indicators
     series_ids = {
         "US Grocery Sales": ("RSGCS", "M"),  
+        "US Food Service and Drinking Places": ("RSFSDP", "M"),
         "CPI (Food at Home)": ("CUSR0000SAF11", "M"),
         "Real Disposable Income": ("DSPIC96", "M"),
         "Unemployment Rate": ("UNRATE", "M"),
@@ -22,6 +23,7 @@ def fetch_fred_data(start_date="2000-01-01", end_date="2025-01-01", api_key_path
         "Oil Prices": ("DCOILWTICO", "D"),
         "Avg Home Price": ("CSUSHPINSA", "M"),
         "Consumer Sentiment": ("UMCSENT", "M"),
+        "PPI Farm Products": ("WPU01", "M"),
         "PPI Final Food": ("PPIDFS", "M"),
         "PPI Food and Feed": ("WPU02", "M"),
         "PPI Finished Consumer Goods": ("WPSFD4111", "M"),
